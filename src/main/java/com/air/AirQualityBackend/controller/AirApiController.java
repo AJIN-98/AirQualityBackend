@@ -15,6 +15,7 @@ public class AirApiController {
 
     @Autowired
     AirService airService;
+
     @GetMapping("/list")
     public ResponseEntity<ArrayList<String>> getAllCity() {
         try {
