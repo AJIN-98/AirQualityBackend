@@ -6,5 +6,6 @@ import java.util.ArrayList;
 
 @Service
 public interface AirService {
-    ArrayList<String> getCountryList();
+    ArrayList<String> getCounties();
+    ArrayList<String> getStates(String country);
 }
