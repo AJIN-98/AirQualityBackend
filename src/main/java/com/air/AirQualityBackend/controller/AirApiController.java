@@ -20,15 +20,6 @@ public class AirApiController {
     @Autowired
     AirService airService;
 
-    @GetMapping("/list")
-    public ResponseEntity<ArrayList<String>> getAllCity() {
-        try {
-            ArrayList<String> countryList = airService.getCountryList();
-            return ResponseEntity.ok(countryList);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).body(null);
-
     @GetMapping("/countries")
     public ResponseEntity<?> getAllCountries() {
         try {
