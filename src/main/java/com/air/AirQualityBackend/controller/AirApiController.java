@@ -28,6 +28,7 @@ public class AirApiController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
     @GetMapping("/states")
     public ResponseEntity<?> getAllStates(@RequestBody CountryName country) {
         try {
