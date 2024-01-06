@@ -33,7 +33,7 @@ pipeline {
             steps {
                 script {
                     // Deploy or run the Spring Boot application
-                    bat 'java -jar target/*.jar'
+                    bat 'java -jar target/AirQualityBackend-0.0.1-SNAPSHOT.jar'
                 }
             }
         }
