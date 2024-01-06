@@ -20,9 +20,9 @@ import java.util.Objects;
 public class AirServiceImpl implements AirService {
 
     @Value("${api.country.uri}")
-    private String countryUri;
+    private String countryUrl;
     @Value("${api.state.uri}")
-    private String stateUri;
+    private String stateUrl;
 
     @Value("${api.key}")
     private String apiKey;
@@ -34,7 +34,7 @@ public class AirServiceImpl implements AirService {
         try {
             RestTemplate restTemplate = new RestTemplate();
             HttpEntity<?> request = new HttpEntity<>(null);
-            ResponseEntity<Country> response = restTemplate.exchange(countryUri + "?key=" + apiKey, HttpMethod.GET, request, Country.class);
+            ResponseEntity<Country> response = restTemplate.exchange(countryUrl + "?key=" + apiKey, HttpMethod.GET, request, Country.class);
 
             if (response.getStatusCode().is2xxSuccessful()) {
                 for (CountryName countryName : Objects.requireNonNull(response.getBody()).getData()) {
@@ -57,7 +57,7 @@ public class AirServiceImpl implements AirService {
         try {
             RestTemplate restTemplate = new RestTemplate();
             HttpEntity<?> request = new HttpEntity<>(country);
-            ResponseEntity<State> response = restTemplate.exchange(stateUri + country + "&key=" + apiKey, HttpMethod.GET, request, State.class);
+            ResponseEntity<State> response = restTemplate.exchange(stateUrl + country + "&key=" + apiKey, HttpMethod.GET, request, State.class);
             if (response.getStatusCode().is2xxSuccessful()) {
                 for (StateName stateName : response.getBody().getData()) {
                     stateList.add(stateName.getState());
