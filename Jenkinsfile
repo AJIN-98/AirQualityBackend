@@ -33,7 +33,7 @@ pipeline {
             steps {
                 script {
                     // Deploy or run the Spring Boot application
-                    sh 'java -jar target/your-application.jar'
+                    sh 'java -jar target/*.jar'
                 }
             }
         }
