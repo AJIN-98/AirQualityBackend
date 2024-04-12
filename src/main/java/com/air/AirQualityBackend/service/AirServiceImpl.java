@@ -1,10 +1,12 @@
 package com.air.AirQualityBackend.service;
 
+import com.air.AirQualityBackend.config.ApiProperties;
 import com.air.AirQualityBackend.model.Country;
 import com.air.AirQualityBackend.model.CountryName;
 import com.air.AirQualityBackend.model.State;
 import com.air.AirQualityBackend.model.StateName;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -14,18 +16,21 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Slf4j
 @Service
 public class AirServiceImpl implements AirService {
 
-    @Value("${api.country.uri}")
-    private String countryUrl;
-    @Value("${api.state.uri}")
-    private String stateUrl;
+    @Autowired
+    ApiProperties apiProperties;
 
-    @Value("${api.key}")
-    private String apiKey;
+
+    public AirServiceImpl(ApiProperties apiProperties) {
+        this.apiProperties = apiProperties;
+
+
+    }
 
     @Override
     public ArrayList<String> getCounties() {
@@ -34,7 +39,9 @@ public class AirServiceImpl implements AirService {
         try {
             RestTemplate restTemplate = new RestTemplate();
             HttpEntity<?> request = new HttpEntity<>(null);
-            ResponseEntity<Country> response = restTemplate.exchange(countryUrl + "?key=" + apiKey, HttpMethod.GET, request, Country.class);
+            log.info(apiProperties.getUri().getCountry());
+            log.info(apiProperties.getUri().getKey());
+            ResponseEntity<Country> response = restTemplate.exchange(apiProperties.getUri().getCountry() + "?key=" + apiProperties.getUri().getKey(), HttpMethod.GET, request, Country.class);
 
             if (response.getStatusCode().is2xxSuccessful()) {
                 for (CountryName countryName : Objects.requireNonNull(response.getBody()).getData()) {
@@ -57,7 +64,7 @@ public class AirServiceImpl implements AirService {
         try {
             RestTemplate restTemplate = new RestTemplate();
             HttpEntity<?> request = new HttpEntity<>(country);
-            ResponseEntity<State> response = restTemplate.exchange(stateUrl + country + "&key=" + apiKey, HttpMethod.GET, request, State.class);
+            ResponseEntity<State> response = restTemplate.exchange(apiProperties.getUri().getState() + country + "&key=" + apiProperties.getUri().getKey(), HttpMethod.GET, request, State.class);
             if (response.getStatusCode().is2xxSuccessful()) {
                 for (StateName stateName : response.getBody().getData()) {
                     stateList.add(stateName.getState());
